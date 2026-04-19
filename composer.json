@@ -1,0 +1,55 @@
+{
+    "name": "devrkb21/bkash-pgw-laravel",
+    "description": "Production-ready Laravel integration for bKash Tokenized Checkout V2 (auth, payments, webhooks).",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "bkash",
+        "payment-gateway",
+        "tokenized-checkout",
+        "tokenized-v2",
+        "webhook",
+        "bangladesh"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "devrkb21"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/http": "^10.0|^11.0|^12.0",
+        "illuminate/cache": "^10.0|^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Devrkb21\\Bkash\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Devrkb21\\Bkash\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "phpunit/phpunit": "^10.5|^11.0"
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Devrkb21\\Bkash\\BkashServiceProvider"
+            ],
+            "aliases": {
+                "Bkash": "Devrkb21\\Bkash\\Facades\\Bkash"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
