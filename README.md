@@ -1,29 +1,39 @@
-# 💸 Laravel bKash Tokenized Checkout V2
+# 💸 Laravel bKash Payment Gateway (Tokenized Checkout V2)
 
-Production-ready Laravel package for integrating **bKash Tokenized Checkout V2 API**.
+🚀 Production-ready **Laravel bKash package** for integrating **bKash Tokenized Checkout V2 API** with secure webhook, token management, and full payment flow.
 
-> Built for real-world usage — not just API wrapping.
-
----
-
-## ✨ Features
-
-* 🔐 Automatic token management (grant + refresh)
-* 🔁 Safe retry mechanism (no duplicate payment risk)
-* 💳 Full payment flow (create, execute, query, capture, void)
-* 🔄 Agreement (saved wallet) support
-* 🧾 Refund & transaction APIs
-* 🔔 Secure SNS webhook handling (signature verified)
-* 🧪 Fully tested (Auth, Payment, Webhook)
-* ⚡ Clean Laravel integration (Facade + DI)
+> The most complete and secure bKash integration for Laravel.
 
 ---
 
-## 🚀 Installation
+![PHP](https://img.shields.io/badge/PHP-8.1+-blue)
+![Laravel](https://img.shields.io/badge/Laravel-10%2B-red)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+---
+
+## 🚀 Quick Start (30 seconds)
 
 ```bash
 composer require devrkb21/bkash-pgw-laravel
 ```
+
+```php
+use Bkash;
+
+$url = Bkash::payment()->createPayment([
+    'payerReference' => 'user_123',
+    'callbackURL' => route('bkash.callback'),
+    'amount' => '100',
+    'currency' => 'BDT',
+    'intent' => 'sale',
+    'merchantInvoiceNumber' => 'INV123456',
+]);
+
+return redirect($url->bkash_url);
+```
+
+👉 That’s it. User will be redirected to bKash payment page.
 
 ---
 
@@ -35,7 +45,7 @@ Publish config:
 php artisan vendor:publish --tag=bkash-config
 ```
 
-Update `.env`:
+Add credentials:
 
 ```env
 BKASH_ENV=sandbox
@@ -44,28 +54,6 @@ BKASH_APP_KEY=
 BKASH_APP_SECRET=
 BKASH_USERNAME=
 BKASH_PASSWORD=
-
-BKASH_TIMEOUT=30
-BKASH_CACHE=true
-```
-
----
-
-## ⚡ Quick Start
-
-```php
-use Bkash;
-
-$response = Bkash::payment()->createPayment([
-    'payerReference' => 'user_123',
-    'callbackURL' => route('bkash.callback'),
-    'amount' => '100',
-    'currency' => 'BDT',
-    'intent' => 'sale',
-    'merchantInvoiceNumber' => 'INV123456',
-]);
-
-return redirect($response->bkash_url);
 ```
 
 ---
@@ -75,26 +63,20 @@ return redirect($response->bkash_url);
 ### 1. Create Payment
 
 ```php
-$response = Bkash::payment()->createPayment([...]);
+Bkash::payment()->createPayment([...]);
 ```
 
----
-
-### 2. Execute Payment (Callback)
+### 2. Handle Callback
 
 ```php
-$result = Bkash::payment()->handleCallback(request()->all());
+Bkash::payment()->handleCallback(request()->all());
 ```
-
----
 
 ### 3. Query Payment
 
 ```php
 Bkash::payment()->queryPayment($paymentId);
 ```
-
----
 
 ### 4. Capture / Void
 
@@ -114,7 +96,7 @@ Bkash::agreement()->executeAgreement($agreementId);
 
 ---
 
-## 💰 Refund
+## 💰 Refund API
 
 ```php
 Bkash::refund()->refundTransaction([
@@ -127,9 +109,9 @@ Bkash::refund()->refundTransaction([
 
 ---
 
-## 🔔 Webhook Setup (IMPORTANT)
+## 🔔 Webhook (Secure & Automatic)
 
-Enable routes in config:
+Enable in config:
 
 ```php
 'enable_routes' => true,
@@ -137,11 +119,11 @@ Enable routes in config:
 
 Endpoint:
 
-```bash
+```
 POST /bkash/webhook
 ```
 
-### What’s handled automatically:
+### Automatically handled:
 
 * SNS Subscription confirmation
 * Signature verification
@@ -150,12 +132,23 @@ POST /bkash/webhook
 
 ---
 
-## 🔐 Security
+## 🔐 Why this package?
 
-* ✅ Token never exposed in logs
-* ✅ SNS signature fully verified
+Most Laravel bKash packages:
+
+* ❌ No token management
+* ❌ No webhook security
+* ❌ Only basic API wrappers
+
+This package provides:
+
+* ✅ Automatic token lifecycle (grant + refresh)
+* ✅ Secure SNS webhook verification
 * ✅ Replay attack protection
-* ✅ Strict certificate validation
+* ✅ Retry-safe HTTP client
+* ✅ Full payment + agreement + refund APIs
+* ✅ Clean Laravel integration (Facade + DI)
+* ✅ Test coverage
 
 ---
 
@@ -167,41 +160,30 @@ composer test
 
 ---
 
-## 🤔 Why this package?
-
-Most bKash packages:
-
-* ❌ No token lifecycle handling
-* ❌ No webhook security
-* ❌ Basic API wrappers
-
-This package provides:
-
-* ✅ Production-ready architecture
-* ✅ Secure webhook verification
-* ✅ Retry-safe HTTP client
-* ✅ Clean Laravel integration
-
----
-
 ## 📦 Requirements
 
 * PHP 8.1+
-* Laravel 10/11/12
+* Laravel 10 / 11 / 12
+
+---
+
+## 📈 SEO Keywords
+
+Laravel bKash payment gateway, bKash Laravel package, Bangladesh payment gateway Laravel, bKash Tokenized Checkout V2, Laravel payment integration bKash
 
 ---
 
 ## 🛠 Roadmap
 
-* [ ] Multi-gateway support (bKash + Nagad + SSLCommerz)
 * [ ] Event system (PaymentSuccess, Failed)
-* [ ] Queue-based webhook processing
+* [ ] Queue-based webhook handling
+* [ ] Multi-gateway support (bKash + Nagad + SSLCommerz)
 
 ---
 
 ## 🤝 Contributing
 
-PRs are welcome. Please ensure tests pass before submitting.
+PRs are welcome. Please ensure tests pass.
 
 ---
 
@@ -213,4 +195,16 @@ MIT License
 
 ## ⭐ Support
 
-If this package helps you, consider giving it a star ⭐
+If this package helps you, please give it a star ⭐
+It helps others discover the project.
+
+---
+
+## ☕ Support Development
+
+If you find this package useful, you can support ongoing development:
+
+👉 https://buymeacoffee.com/devrkb21
+
+Your support helps maintain and improve this package ❤️
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-yellow)](https://buymeacoffee.com/devrkb21)
